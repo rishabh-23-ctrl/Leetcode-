@@ -14,13 +14,13 @@ public:
         if(head == NULL) return NULL;
         ListNode *curr = head;
         while(curr -> next != NULL){
-            //ListNode *temp = curr->next;
+            ListNode *temp = curr->next;
             if(curr->val == curr->next->val){
-                curr->next = curr->next->next;
-                //delete temp;
+                curr->next = temp->next;  //remove duplicate
+                delete temp;   //deleting duplicate node
             }
             else{
-                curr = curr->next;
+                curr = curr->next;    //moving forward
             }
         }
         return head;
