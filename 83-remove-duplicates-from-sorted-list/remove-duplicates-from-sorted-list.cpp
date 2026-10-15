@@ -14,10 +14,10 @@ public:
         if(head == NULL) return NULL;
         ListNode *curr = head;
         while(curr -> next != NULL){
-            ListNode *temp = curr->next;
+            //ListNode *temp = curr->next;
             if(curr->val == curr->next->val){
-                curr->next = temp->next;
-                delete temp;
+                curr->next = curr->next->next;
+                //delete temp;
             }
             else{
                 curr = curr->next;
