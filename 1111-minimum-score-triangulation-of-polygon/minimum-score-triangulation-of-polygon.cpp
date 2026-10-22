@@ -1,34 +1,26 @@
 
 class Solution {
 public:
-    int solve(int i, int j, vector<int>& values,
-              vector<vector<int>>& dp) {
-        
-        if (j - i < 2) {
-            return 0;
-        }
-        if (dp[i][j] != -1) {
-            return dp[i][j];
-        }
-
-        int ans = INT_MAX;
-
-        for (int k = i + 1; k < j; k++) {
-            int score = values[i] * values[k] * values[j]
-                      + solve(i, k, values, dp)
-                      + solve(k, j, values, dp);
-
-            ans = min(ans, score);
-        }
-
-        return dp[i][j] = ans;
-    }
-
     int minScoreTriangulation(vector<int>& values) {
         int n = values.size();
 
-        vector<vector<int>> dp(n, vector<int>(n, -1));
+        vector<vector<int>> dp(n, vector<int>(n, 0));
 
-        return solve(0, n - 1, values, dp);
+        for (int len = 3; len <= n; len++) {
+            for (int i = 0; i + len <= n; i++) {
+                int j = i + len - 1;
+                dp[i][j] = INT_MAX;
+
+                for (int k = i + 1; k < j; k++) {
+                    int score = values[i] * values[k] * values[j]
+                              + dp[i][k]
+                              + dp[k][j];
+
+                    dp[i][j] = min(dp[i][j], score);
+                }
+            }
+        }
+
+        return dp[0][n - 1];
     }
 };
