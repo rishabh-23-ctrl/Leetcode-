@@ -9,14 +9,13 @@
 class Solution {
 public:
     bool hasCycle(ListNode *head) {
-        if(head == NULL || head->next == NULL) return false;
         //Floyd Cycle Detection Algorithm
-        map<ListNode*, bool>visited;
-        ListNode* temp = head;
-        while(temp!=NULL){
-            if(visited[temp]) return true;
-            visited[temp]=true;
-            temp = temp -> next;
+        ListNode* fast = head;
+        ListNode* slow = head;
+        while(fast !=  NULL && fast->next != NULL){
+            fast = fast->next->next;
+            slow = slow->next;
+            if(slow == fast) return true;
         }
         return false;
     }
