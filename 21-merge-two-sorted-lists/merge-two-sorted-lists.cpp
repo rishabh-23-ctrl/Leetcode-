@@ -22,7 +22,7 @@ public:
             curr1->next = curr2;
         }
         while(next1 != NULL && curr2 != NULL){
-            if(curr2->next != NULL) next2 = curr2->next;
+            //if(curr2->next != NULL) next2 = curr2->next;
             if(curr2->val >= curr1->val && curr2->val <= next1->val){
                 curr1->next = curr2;
                 next2 = curr2->next;
