@@ -1,50 +1,33 @@
 class Solution {
-vector<int> nextSmallerElement(vector<int> &arr, int n)
-{
-    stack<int> s;
-    s.push(-1);
-    vector<int> ans (n);
-    for(int i = n-1; i >= 0; i--){
-        while(s.top() != -1 && arr[s.top()] >= arr[i]){
-            s.pop();
-        }
-        ans[i] = s.top();
-        s.push(i);
-    }
-    return ans;
-}
-vector<int> prevSmallerElement(vector<int> &arr, int n)
-{
-    stack<int> s;
-    s.push(-1);
-    vector<int> ans (n);
-    for(int i = 0; i < n; i++){
-        while(s.top() != -1 && arr[s.top()] >= arr[i]){
-            s.pop();
-        }
-        ans[i] = s.top();
-        s.push(i);
-    }
-    return ans;
-}
 public:
     int largestRectangleArea(vector<int>& heights) {
         int n = heights.size();
-        vector<int>next (n);
-        next = nextSmallerElement(heights, n);
+        vector<int> leftStack, rightStack;
+        vector<int> leftSmaller(n), rightSmaller(n);
 
-        vector<int>prev (n);
-        prev = prevSmallerElement(heights, n);
-        int area = INT_MIN;
-        for(int i =0; i < n; i++){
-            int l = heights[i];
-            if(next[i] == -1) next[i] = n;
-
-            int b = next[i] - prev[i] - 1;
-
-            int newArea = l*b;
-            area = max(newArea, area);
+        for(int i = 0; i < n; i++) {
+            while(!leftStack.empty() && heights[leftStack.back()] >= heights[i]) {
+                leftStack.pop_back();
+            }
+            int leftIndex = leftStack.empty() ? -1 : leftStack.back();
+            leftStack.push_back(i);
+            leftSmaller[i] = leftIndex;
         }
-        return area;
+
+        for(int i = n - 1; i >= 0; i--) {
+            while(!rightStack.empty() && heights[rightStack.back()] >= heights[i]) {
+                rightStack.pop_back();
+            }
+            int rightIndex = rightStack.empty() ? n : rightStack.back();
+            rightStack.push_back(i);
+            rightSmaller[i] = rightIndex;
+        }
+
+        int max_area = 0;
+        for(int i = 0; i < n; i++) {
+            max_area = max(max_area, heights[i] * (rightSmaller[i] - leftSmaller[i] - 1));
+        }
+
+        return max_area;
     }
 };
